@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import background from "./assets/images/background.jpg";
 import ImagesContainer from "./containers/ImagesContainer";
+import StartScreen from './components/StartScreen';
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +35,7 @@ function App() {
   return (
     loaded && (
       <div className={classes.root}>
+        <StartScreen />
         <ImagesContainer />
       </div>
     )

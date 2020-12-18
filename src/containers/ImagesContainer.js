@@ -43,7 +43,6 @@ const ImagesContainer = () => {
     let heights = new Array(columns).fill(0);
     let gridItems = imagesList.map((child) => {
       const column = heights.indexOf(Math.min(...heights));
-      console.log(width);
       const xy = [
         (width / columns) * column,
         (heights[column] += width / columns) - width / columns,
@@ -57,7 +56,6 @@ const ImagesContainer = () => {
     });
     return [heights, gridItems];
   }, [columns, imagesList, width]);
-  console.log(heights);
 
   const transitions = useTransition(gridItems, (item) => item.image, {
     from: ({ xy, width, height }) => ({ xy, width, height, opacity: 0 }),
