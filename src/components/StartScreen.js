@@ -11,6 +11,7 @@ const useStyles = makeStyles({
   introImage: {
     width: "100%",
     height: "100%",
+    minWidth: 230
   },
   playButton: {
     padding: "25px",
@@ -42,6 +43,8 @@ const GlobalCss = withStyles({
     ".MuiPaper-root": {
       background: "none",
       boxShadow: "none",
+      margin: 0,
+      minWidth: 320
     },
     ".MuiDialog-paperWidthSm": {
       maxWidth: "100%",

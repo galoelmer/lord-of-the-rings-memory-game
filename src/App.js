@@ -2,7 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import background from "./assets/images/background.jpg";
 import ImagesContainer from "./containers/ImagesContainer";
-import StartScreen from './components/StartScreen';
+import StartScreen from "./components/StartScreen";
+import ScoreBar from "./components/ScoreBar";
+import Modal from "./components/Modal";
 
 const useStyles = makeStyles({
   root: {
@@ -15,11 +17,17 @@ const useStyles = makeStyles({
     backgroundSize: "cover",
     height: "100%",
     transition: "all 0.5s",
+    minWidth: 320,
   },
 });
 
 function App() {
   const [loaded, setLoaded] = React.useState(false);
+  const [score, setScore] = React.useState(0);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [isChallengeComplete, setChallengeComplete] = React.useState(false);
+  const [doubleClickImage, setDoubleClickImage] = React.useState(null);
+
   React.useEffect(() => {
     const loaderElement = document.querySelector(".loader");
     if (loaderElement) {
@@ -31,12 +39,27 @@ function App() {
       };
     }
   }, []);
+
   const classes = useStyles();
   return (
     loaded && (
       <div className={classes.root}>
         <StartScreen />
-        <ImagesContainer />
+        <ScoreBar score={score} />
+        <ImagesContainer
+          setScore={setScore}
+          setOpenModal={setOpenModal}
+          setChallengeComplete={setChallengeComplete}
+          setDoubleClickImage={setDoubleClickImage}
+        />
+        <Modal
+          open={openModal}
+          setOpen={setOpenModal}
+          isChallengeComplete={isChallengeComplete}
+          setChallengeComplete={setChallengeComplete}
+          doubleClickImage={doubleClickImage}
+          setDoubleClickImage={setDoubleClickImage}
+        />
       </div>
     )
   );

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTransition, a } from "react-spring";
 import useMeasure from "../hooks/useMeasure";
 import _shuffle from "lodash.shuffle";
@@ -27,15 +27,21 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up(768)]: {
       maxWidth: 760,
-      margin: '0 auto',
+      margin: "0 auto",
     },
   },
 }));
 
-const ImagesContainer = () => {
+const ImagesContainer = ({
+  setScore,
+  setOpenModal,
+  setChallengeComplete,
+  setDoubleClickImage,
+}) => {
   const mobileSize = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
   const [imagesList, updateImagesList] = useState(_shuffle(list));
+  const [clickedImages, setClickedImages] = useState([]);
   const columns = mobileSize ? 3 : 4;
   const [bind, { width }] = useMeasure();
 
@@ -66,6 +72,40 @@ const ImagesContainer = () => {
     trail: 25,
   });
 
+  useEffect(() => {
+    setScore(clickedImages.length);
+    if (clickedImages.length === 12) {
+      setClickedImages([]);
+      setChallengeComplete(true);
+      setOpenModal(true);
+    }
+    /**
+     *  Cheat console log
+     */
+    // const imagesClicked = list
+    //   .filter((x) => clickedImages.includes(x.key))
+    //   .map((y) => y.name);
+    // console.log(imagesClicked);
+  }, [clickedImages, setChallengeComplete, setOpenModal, setScore]);
+
+  /**
+   * Score update after clicking images
+   */
+  const handleClick = (key) => {
+    if (!clickedImages.includes(key)) {
+      setClickedImages((prevState) => [key, ...prevState]);
+    } else {
+      // Find character's name with a doubled click
+      setDoubleClickImage(() => {
+        return list.find((item) => item.key === key).name;
+      });
+      setOpenModal(true);
+      setScore(0);
+      setClickedImages([]);
+    }
+    updateImagesList(_shuffle(list));
+  };
+
   return (
     <>
       <div
@@ -83,7 +123,7 @@ const ImagesContainer = () => {
                 ),
                 ...rest,
               }}
-              onClick={() => updateImagesList(_shuffle(list))}
+              onClick={() => handleClick(item.key)}
             >
               <img src={item.image} alt={item.image} />
             </a.div>
