@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
+import { GameContext } from "../context/GameContext";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -19,23 +20,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ModalWindow = ({
-  open,
-  setOpen,
-  isChallengeComplete,
-  setChallengeComplete,
-  doubleClickImage,
-  setDoubleClickImage
-}) => {
+const ModalWindow = () => {
   const classes = useStyles();
+  const {
+    state: { openModal: open, isChallengeComplete, characterName },
+    dispatch,
+  } = useContext(GameContext);
 
   const handleClose = () => {
-    setOpen(false);
-    setChallengeComplete(false);
-    setDoubleClickImage(null);
+    dispatch({ type: "CLOSE_MODAL" });
+    dispatch({ type: "RESET_CHALLENGE" });
+    dispatch({ type: "REMOVE_CHARACTER_NAME" });
   };
-
-  
 
   return (
     <div>
@@ -59,7 +55,7 @@ const ModalWindow = ({
             ) : (
               <>
                 <h2>Sorry!</h2>
-                <p>{doubleClickImage} was clicked twice</p>
+                <p>{characterName} was clicked twice</p>
               </>
             )}
             <Button onClick={handleClose}>Play again</Button>

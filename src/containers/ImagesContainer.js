@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { useTransition, a } from "react-spring";
 import useMeasure from "../hooks/useMeasure";
 import _shuffle from "lodash.shuffle";
 import list from "../imagesUrl";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { GameContext } from "../context/GameContext";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -32,18 +33,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImagesContainer = ({
-  setScore,
-  setOpenModal,
-  setChallengeComplete,
-  setDoubleClickImage,
-}) => {
+const ImagesContainer = () => {
   const mobileSize = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
   const [imagesList, updateImagesList] = useState(_shuffle(list));
   const [clickedImages, setClickedImages] = useState([]);
   const columns = mobileSize ? 3 : 4;
   const [bind, { width }] = useMeasure();
+  const { dispatch } = useContext(GameContext);
 
   const [heights, gridItems] = useMemo(() => {
     let heights = new Array(columns).fill(0);
@@ -73,11 +70,11 @@ const ImagesContainer = ({
   });
 
   useEffect(() => {
-    setScore(clickedImages.length);
+    dispatch({ type: "UPDATE_SCORE", payload: clickedImages.length });
     if (clickedImages.length === 12) {
       setClickedImages([]);
-      setChallengeComplete(true);
-      setOpenModal(true);
+      dispatch({ type: "SET_CHALLENGE_COMPLETE" });
+      dispatch({ type: "OPEN_MODAL" });
     }
     /**
      *  Cheat console log
@@ -86,7 +83,7 @@ const ImagesContainer = ({
     //   .filter((x) => clickedImages.includes(x.key))
     //   .map((y) => y.name);
     // console.log(imagesClicked);
-  }, [clickedImages, setChallengeComplete, setOpenModal, setScore]);
+  }, [clickedImages, dispatch]);
 
   /**
    * Score update after clicking images
@@ -96,11 +93,13 @@ const ImagesContainer = ({
       setClickedImages((prevState) => [key, ...prevState]);
     } else {
       // Find character's name with a doubled click
-      setDoubleClickImage(() => {
-        return list.find((item) => item.key === key).name;
-      });
-      setOpenModal(true);
-      setScore(0);
+      // setDoubleClickImage(() => {
+      //   return list.find((item) => item.key === key).name;
+      // });
+      const characterName = list.find((item) => item.key === key).name;
+      dispatch({ type: "SET_CHARACTER_NAME", payload: characterName });
+      dispatch({ type: "OPEN_MODAL" });
+      dispatch({ type: "RESET_SCORE" });
       setClickedImages([]);
     }
     updateImagesList(_shuffle(list));

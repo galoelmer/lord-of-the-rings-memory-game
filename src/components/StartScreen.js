@@ -8,10 +8,16 @@ import playButtonImage from "../assets/images/play_button.png";
 import backgroundImage from "../assets/images/background.jpg";
 
 const useStyles = makeStyles({
+  dialog: {
+    overflowY: "scroll",
+  },
+  dialogContent: {
+    maxHeight: "100%",
+  },
   introImage: {
     width: "100%",
     height: "100%",
-    minWidth: 230
+    minWidth: 230,
   },
   playButton: {
     padding: "25px",
@@ -44,10 +50,11 @@ const GlobalCss = withStyles({
       background: "none",
       boxShadow: "none",
       margin: 0,
-      minWidth: 320
+      minWidth: 320,
+      overflowY: "visible",
     },
     ".MuiDialog-paperWidthSm": {
-      maxWidth: "100%",
+      // maxWidth: "100%",
     },
     ".MuiDialogActions-root": {
       justifyContent: "center",
@@ -67,22 +74,25 @@ export default function AlertDialog() {
     <div>
       <GlobalCss />
       <Dialog
+        className={classes.dialog}
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         disableBackdropClick
       >
-        <img className={classes.introImage} src={introImage} alt="Intro" />
-        <DialogActions>
-          <Button className={classes.playButton} onClick={handleClose}>
-            <img
-              src={playButtonImage}
-              style={{ width: "100%" }}
-              alt="Play button"
-            />
-          </Button>
-        </DialogActions>
+        
+          <img className={classes.introImage} src={introImage} alt="Intro" />
+          <DialogActions>
+            <Button className={classes.playButton} onClick={handleClose}>
+              <img
+                src={playButtonImage}
+                style={{ width: "100%" }}
+                alt="Play button"
+              />
+            </Button>
+          </DialogActions>
+        
       </Dialog>
     </div>
   );

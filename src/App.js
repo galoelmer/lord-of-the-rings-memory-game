@@ -6,6 +6,9 @@ import StartScreen from "./components/StartScreen";
 import ScoreBar from "./components/ScoreBar";
 import Modal from "./components/Modal";
 
+// Context API
+import GameContextProvider from "./context/GameContext";
+
 const useStyles = makeStyles({
   root: {
     background: `linear-gradient(
@@ -23,10 +26,6 @@ const useStyles = makeStyles({
 
 function App() {
   const [loaded, setLoaded] = React.useState(false);
-  const [score, setScore] = React.useState(0);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [isChallengeComplete, setChallengeComplete] = React.useState(false);
-  const [doubleClickImage, setDoubleClickImage] = React.useState(null);
 
   React.useEffect(() => {
     const loaderElement = document.querySelector(".loader");
@@ -44,22 +43,12 @@ function App() {
   return (
     loaded && (
       <div className={classes.root}>
-        <StartScreen />
-        <ScoreBar score={score} />
-        <ImagesContainer
-          setScore={setScore}
-          setOpenModal={setOpenModal}
-          setChallengeComplete={setChallengeComplete}
-          setDoubleClickImage={setDoubleClickImage}
-        />
-        <Modal
-          open={openModal}
-          setOpen={setOpenModal}
-          isChallengeComplete={isChallengeComplete}
-          setChallengeComplete={setChallengeComplete}
-          doubleClickImage={doubleClickImage}
-          setDoubleClickImage={setDoubleClickImage}
-        />
+        <GameContextProvider>
+          <StartScreen />
+          <ScoreBar />
+          <ImagesContainer />
+          <Modal />
+        </GameContextProvider>
       </div>
     )
   );

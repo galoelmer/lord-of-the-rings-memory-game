@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { GameContext } from "../context/GameContext";
 
 const useStyles = makeStyles({
   scoreBar: {
@@ -19,7 +20,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ScoreBar({score}) {
+function ScoreBar() {
+  const {
+    state: { score },
+  } = useContext(GameContext);
   const classes = useStyles();
   return (
     <div className={classes.scoreBar}>
