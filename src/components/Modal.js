@@ -11,12 +11,45 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    fontFamily: "Bilbo",
+    fontSize: "1.5em",
+    letterSpacing: 3,
+    textAlign: "center",
+    minWidth: 320,
+
+    "& h2": {
+      fontSize: "2em",
+      margin: 0,
+      color: "#fff",
+    },
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
+    // backgroundColor: theme.palette.background.paper,
+    background: `linear-gradient(
+      135deg,
+      rgba(2, 0, 36, 0.9318277652858018) 0%,
+      rgba(10, 25, 54, 0.8321078773306197) 48%,
+      rgba(52, 124, 182, 0.834908997778799) 100%
+    )`,
+    boxShadow: theme.shadows[8],
     padding: theme.spacing(2, 4, 3),
+    borderRadius: 15,
+    outline: "none",
+  },
+  characterName: {
+    fontSize: "1.1em",
+    fontWeight: "bold",
+    color: "#fff",
+
+    "& span": {
+      color: 'greenyellow'
+    }
+  },
+  button: {
+    fontFamily: "Bilbo",
+    fontSize: "0.8em",
+    fontWeight: "bold",
+    marginTop: 20,
   },
 }));
 
@@ -55,10 +88,19 @@ const ModalWindow = () => {
             ) : (
               <>
                 <h2>Sorry!</h2>
-                <p>{characterName} was clicked twice</p>
+                <p className={classes.characterName}>
+                  <span>{characterName}</span> was clicked twice
+                </p>
               </>
             )}
-            <Button onClick={handleClose}>Play again</Button>
+            <Button
+              className={classes.button}
+              onClick={handleClose}
+              variant="contained"
+              color="primary"
+            >
+              Play again
+            </Button>
           </div>
         </Fade>
       </Modal>

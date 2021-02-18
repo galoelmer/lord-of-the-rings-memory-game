@@ -5,16 +5,17 @@ import { GameContext } from "../context/GameContext";
 const useStyles = makeStyles({
   scoreBar: {
     "& h3": {
-      fontSize: "1.8rem",
+      fontFamily: 'Bilbo',
+      fontSize: "2.3rem",
       textAlign: "center",
-      letterSpacing: 2,
+      letterSpacing: 4,
       fontWeight: "bold",
       margin: 0,
       color: "gold",
 
       "& span": {
         color: "greenyellow",
-        fontSize: "2rem",
+        fontSize: "3.5rem",
       },
     },
   },
