@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
+import Popover from "@material-ui/core/Popover";
 import { GameContext } from "../context/GameContext";
+import imagesList from "../imagesUrl";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -42,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
 
     "& span": {
-      color: 'greenyellow'
-    }
+      color: "greenyellow",
+    },
   },
   button: {
     fontFamily: "Bilbo",
@@ -51,10 +53,19 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginTop: 20,
   },
+  popover: {
+    pointerEvents: "none",
+    cursor: "pointer",
+
+    "& img": {
+      borderRadius: 10,
+    },
+  },
 }));
 
 const ModalWindow = () => {
   const classes = useStyles();
+  const [imageSrc, setImageSrc] = useState(null);
   const {
     state: { openModal: open, isChallengeComplete, characterName },
     dispatch,
@@ -66,19 +77,34 @@ const ModalWindow = () => {
     dispatch({ type: "REMOVE_CHARACTER_NAME" });
   };
 
+  useEffect(() => {
+    const imageSrc = imagesList.find((image) => image.name === characterName);
+    setImageSrc(imageSrc?.image);
+  }, [characterName]);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+
   return (
     <div>
       <Modal
         open={open}
         onClose={handleClose}
         className={classes.modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
+        closeAfterTransition
         disableBackdropClick
       >
         <Fade in={open}>
@@ -89,7 +115,35 @@ const ModalWindow = () => {
               <>
                 <h2>Sorry!</h2>
                 <p className={classes.characterName}>
-                  <span>{characterName}</span> was clicked twice
+                  <Popover
+                    className={classes.popover}
+                    open={openPopover}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: 18,
+                    }}
+                    transformOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    onClose={handlePopoverClose}
+                    elevation={8}
+                    disableRestoreFocus
+                  >
+                    <img
+                      src={imageSrc}
+                      alt={characterName}
+                      style={{ width: 80 }}
+                    />
+                  </Popover>
+                  <span
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
+                  >
+                    {characterName + " "}
+                  </span>
+                  was clicked twice
                 </p>
               </>
             )}
