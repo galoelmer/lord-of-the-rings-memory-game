@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import { useTransition, a } from "react-spring";
 import useMeasure from "../hooks/useMeasure";
-import _shuffle from "lodash.shuffle";
-import list from "../imagesUrl";
+// import _shuffle from "lodash.shuffle";
+// import list from "../imagesUrl";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { GameContext } from "../context/GameContext";
@@ -36,15 +36,20 @@ const useStyles = makeStyles((theme) => ({
 const ImagesContainer = () => {
   const mobileSize = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
-  const [imagesList, updateImagesList] = useState(_shuffle(list));
+  const {
+    scoreDispatch,
+    imagesList: { list },
+    listDispatch,
+  } = useContext(GameContext);
+  // const [imagesList, updateImagesList] = useState(_shuffle(list));
   const [clickedImages, setClickedImages] = useState([]);
   const columns = mobileSize ? 3 : 4;
   const [bind, { width }] = useMeasure();
-  const { dispatch } = useContext(GameContext);
+  // const { scoreDispatch } = useContext(GameContext);
 
   const [heights, gridItems] = useMemo(() => {
     let heights = new Array(columns).fill(0);
-    let gridItems = imagesList.map((child) => {
+    let gridItems = list.map((child) => {
       const column = heights.indexOf(Math.min(...heights));
       const xy = [
         (width / columns) * column,
@@ -58,7 +63,7 @@ const ImagesContainer = () => {
       };
     });
     return [heights, gridItems];
-  }, [columns, imagesList, width]);
+  }, [columns, list, width]);
 
   const transitions = useTransition(gridItems, (item) => item.image, {
     from: ({ xy, width, height }) => ({ xy, width, height, opacity: 0 }),
@@ -70,11 +75,11 @@ const ImagesContainer = () => {
   });
 
   useEffect(() => {
-    dispatch({ type: "UPDATE_SCORE", payload: clickedImages.length });
+    scoreDispatch({ type: "UPDATE_SCORE", payload: clickedImages.length });
     if (clickedImages.length === 12) {
       setClickedImages([]);
-      dispatch({ type: "SET_CHALLENGE_COMPLETE" });
-      dispatch({ type: "OPEN_MODAL" });
+      scoreDispatch({ type: "SET_CHALLENGE_COMPLETE" });
+      scoreDispatch({ type: "OPEN_MODAL" });
     }
     /**
      *  Cheat console log
@@ -83,7 +88,7 @@ const ImagesContainer = () => {
     //   .filter((x) => clickedImages.includes(x.key))
     //   .map((y) => y.name);
     // console.log(imagesClicked);
-  }, [clickedImages, dispatch]);
+  }, [clickedImages, scoreDispatch]);
 
   /**
    * Score update after clicking images
@@ -97,12 +102,13 @@ const ImagesContainer = () => {
       //   return list.find((item) => item.key === key).name;
       // });
       const characterName = list.find((item) => item.key === key).name;
-      dispatch({ type: "SET_CHARACTER_NAME", payload: characterName });
-      dispatch({ type: "OPEN_MODAL" });
-      dispatch({ type: "RESET_SCORE" });
+      scoreDispatch({ type: "SET_CHARACTER_NAME", payload: characterName });
+      scoreDispatch({ type: "OPEN_MODAL" });
+      scoreDispatch({ type: "RESET_SCORE" });
       setClickedImages([]);
     }
-    updateImagesList(_shuffle(list));
+    // updateImagesList(_shuffle(list));
+    listDispatch({ type: "SHUFFLE_LIST_IMAGES" });
   };
 
   return (

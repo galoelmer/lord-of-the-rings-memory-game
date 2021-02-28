@@ -67,14 +67,16 @@ const ModalWindow = () => {
   const classes = useStyles();
   const [imageSrc, setImageSrc] = useState(null);
   const {
-    state: { openModal: open, isChallengeComplete, characterName },
-    dispatch,
+    scoreState: { openModal: open, isChallengeComplete, characterName },
+    scoreDispatch,
+    listDispatch,
   } = useContext(GameContext);
 
   const handleClose = () => {
-    dispatch({ type: "CLOSE_MODAL" });
-    dispatch({ type: "RESET_CHALLENGE" });
-    dispatch({ type: "REMOVE_CHARACTER_NAME" });
+    listDispatch({type: "RESET_IMAGES_LIST"});
+    scoreDispatch({ type: "CLOSE_MODAL" });
+    scoreDispatch({ type: "RESET_CHALLENGE" });
+    scoreDispatch({ type: "REMOVE_CHARACTER_NAME" });
   };
 
   useEffect(() => {

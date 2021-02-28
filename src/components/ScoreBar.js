@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 function ScoreBar() {
   const {
-    state: { score },
+    scoreState: { score },
   } = useContext(GameContext);
   const classes = useStyles();
   return (

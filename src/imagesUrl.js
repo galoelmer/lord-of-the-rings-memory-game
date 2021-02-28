@@ -10,6 +10,14 @@ import Galadriel from "./assets/images/Galadriel.jpg";
 import Gandalf from "./assets/images/Gandalf.jpg";
 import Gimli from "./assets/images/Gimli.jpg";
 import gollum from "./assets/images/gollum.jpg";
+import Elrond from "./assets/images/Elrond.jpg";
+import Meriadoc from "./assets/images/Meriadoc.jpg";
+import Peregrin from "./assets/images/Peregrin.jpg";
+import Samwise from "./assets/images/Samwise.jpg";
+import Saruman from "./assets/images/Saruman.jpg";
+import Sauron from "./assets/images/Sauron.jpg";
+import Theoden from "./assets/images/Theoden.jpg";
+import Treebeard from "./assets/images/Treebeard.jpg";
 
 const ImagesList = [
   {
@@ -94,6 +102,62 @@ const ImagesList = [
     key: "12",
     isActive: false,
     name: "Gollum",
+    height: "300",
+  },
+  {
+    image: Elrond,
+    key: "13",
+    isActive: false,
+    name: "Elrond",
+    height: "300",
+  },
+  {
+    image: Meriadoc,
+    key: "14",
+    isActive: false,
+    name: "Merry",
+    height: "300",
+  },
+  {
+    image: Peregrin,
+    key: "15",
+    isActive: false,
+    name: "Pippin",
+    height: "300",
+  },
+  {
+    image: Samwise,
+    key: "16",
+    isActive: false,
+    name: "Samwise",
+    height: "300",
+  },
+  {
+    image: Saruman,
+    key: "17",
+    isActive: false,
+    name: "Saruman",
+    height: "300",
+  },
+  {
+    image: Sauron,
+    key: "18",
+    isActive: false,
+    name: "Sauron",
+    height: "300",
+  },
+  {
+    image: Theoden,
+    key: "19",
+    isActive: false,
+    name: "Theoden",
+    height: "300",
+  },
+  {
+    image: Treebeard,
+    key: "20",
+    isActive: false,
+    name: "Treebeard",
     height: "300",
   },
 ];
