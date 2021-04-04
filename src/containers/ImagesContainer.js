@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import { useTransition, a } from "react-spring";
 import useMeasure from "../hooks/useMeasure";
-// import _shuffle from "lodash.shuffle";
-// import list from "../imagesUrl";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { GameContext } from "../context/GameContext";
@@ -41,11 +39,11 @@ const ImagesContainer = () => {
     imagesList: { list },
     listDispatch,
   } = useContext(GameContext);
-  // const [imagesList, updateImagesList] = useState(_shuffle(list));
   const [clickedImages, setClickedImages] = useState([]);
   const columns = mobileSize ? 3 : 4;
   const [bind, { width }] = useMeasure();
-  // const { scoreDispatch } = useContext(GameContext);
+  const [isClickable, setIsClickable] = useState(true);
+  let count = 0;
 
   const [heights, gridItems] = useMemo(() => {
     let heights = new Array(columns).fill(0);
@@ -72,6 +70,12 @@ const ImagesContainer = () => {
     leave: { height: 0, opacity: 0 },
     config: { mass: 5, tension: 500, friction: 100 },
     trail: 25,
+    // onStart: () => count++,
+    onRest: (e) => {
+      console.log(e);
+      count++;
+      count === 12 && setIsClickable(true);
+    },
   });
 
   useEffect(() => {
@@ -94,6 +98,7 @@ const ImagesContainer = () => {
    * Score update after clicking images
    */
   const handleClick = (key) => {
+    setIsClickable(false);
     if (!clickedImages.includes(key)) {
       setClickedImages((prevState) => [key, ...prevState]);
     } else {
@@ -107,7 +112,6 @@ const ImagesContainer = () => {
       scoreDispatch({ type: "RESET_SCORE" });
       setClickedImages([]);
     }
-    // updateImagesList(_shuffle(list));
     listDispatch({ type: "SHUFFLE_LIST_IMAGES" });
   };
 
@@ -128,7 +132,7 @@ const ImagesContainer = () => {
                 ),
                 ...rest,
               }}
-              onClick={() => handleClick(item.key)}
+              onClick={() => isClickable && handleClick(item.key)}
             >
               <img src={item.image} alt={item.image} />
             </a.div>
