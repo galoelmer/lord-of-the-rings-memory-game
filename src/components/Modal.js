@@ -73,10 +73,9 @@ const ModalWindow = () => {
   } = useContext(GameContext);
 
   const handleClose = () => {
-    listDispatch({type: "RESET_IMAGES_LIST"});
+    listDispatch({ type: "RESET_IMAGES_LIST" });
     scoreDispatch({ type: "CLOSE_MODAL" });
     scoreDispatch({ type: "RESET_CHALLENGE" });
-    scoreDispatch({ type: "REMOVE_CHARACTER_NAME" });
   };
 
   useEffect(() => {

@@ -42,8 +42,6 @@ const ImagesContainer = () => {
   const [clickedImages, setClickedImages] = useState([]);
   const columns = mobileSize ? 3 : 4;
   const [bind, { width }] = useMeasure();
-  const [isClickable, setIsClickable] = useState(true);
-  let count = 0;
 
   const [heights, gridItems] = useMemo(() => {
     let heights = new Array(columns).fill(0);
@@ -70,12 +68,6 @@ const ImagesContainer = () => {
     leave: { height: 0, opacity: 0 },
     config: { mass: 5, tension: 500, friction: 100 },
     trail: 25,
-    // onStart: () => count++,
-    onRest: (e) => {
-      console.log(e);
-      count++;
-      count === 12 && setIsClickable(true);
-    },
   });
 
   useEffect(() => {
@@ -98,7 +90,6 @@ const ImagesContainer = () => {
    * Score update after clicking images
    */
   const handleClick = (key) => {
-    setIsClickable(false);
     if (!clickedImages.includes(key)) {
       setClickedImages((prevState) => [key, ...prevState]);
     } else {
@@ -106,9 +97,11 @@ const ImagesContainer = () => {
       // setDoubleClickImage(() => {
       //   return list.find((item) => item.key === key).name;
       // });
-      const characterName = list.find((item) => item.key === key).name;
-      scoreDispatch({ type: "SET_CHARACTER_NAME", payload: characterName });
-      scoreDispatch({ type: "OPEN_MODAL" });
+      const character = list.find((item) => item.key === key);
+      if (character) {
+        scoreDispatch({ type: "SET_CHARACTER_NAME", payload: character.name });
+        scoreDispatch({ type: "OPEN_MODAL" });
+      }
       scoreDispatch({ type: "RESET_SCORE" });
       setClickedImages([]);
     }
@@ -132,7 +125,7 @@ const ImagesContainer = () => {
                 ),
                 ...rest,
               }}
-              onClick={() => isClickable && handleClick(item.key)}
+              onClick={() => handleClick(item.key)}
             >
               <img src={item.image} alt={item.image} />
             </a.div>
