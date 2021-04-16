@@ -7,7 +7,7 @@
 
 > This is a memory game created with React. Players must click each image just once and be able to remembered the clicked image. If an image is clicked twice, the score is reset to zero. Players must reach the score of 12.
 
-### ✨ [Demo](https://lord-of-the-rings-memory-game.vercel.app/)
+### ✨ [Demo](https://lotrmemorygame.vercel.app/)
 
 ## Prerequisites
 
@@ -29,6 +29,7 @@ npm run start
 ## Built With
 
 * [React](https://www.npmjs.com/package/react) - React is a JavaScript library for creating user interfaces.
+* [React Spring](https://www.react-spring.io/) - Animation library for most UI related animation.
 
 ## Screenshot
 <!-- ![Game Screenshot](./public/images/screenshot.gif) -->
