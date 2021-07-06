@@ -6,6 +6,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import introImage from "../assets/images/intro_image.png";
 import playButtonImage from "../assets/images/play_button.png";
 import backgroundImage from "../assets/images/background.jpg";
+import Footer from "./Footer";
 
 const useStyles = makeStyles({
   dialog: {
@@ -65,9 +66,11 @@ const GlobalCss = withStyles({
 export default function AlertDialog() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [showFooter, setShowFooter] = React.useState(true);
 
   const handleClose = () => {
     setOpen(false);
+    setShowFooter(false);
   };
 
   return (
@@ -77,22 +80,19 @@ export default function AlertDialog() {
         className={classes.dialog}
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
         disableBackdropClick
       >
-        
-          <img className={classes.introImage} src={introImage} alt="Intro" />
-          <DialogActions>
-            <Button className={classes.playButton} onClick={handleClose}>
-              <img
-                src={playButtonImage}
-                style={{ width: "100%" }}
-                alt="Play button"
-              />
-            </Button>
-          </DialogActions>
-        
+        <img className={classes.introImage} src={introImage} alt="Intro" />
+        <DialogActions>
+          <Button className={classes.playButton} onClick={handleClose}>
+            <img
+              src={playButtonImage}
+              style={{ width: "100%" }}
+              alt="Play button"
+            />
+          </Button>
+        </DialogActions>
+        {showFooter && <Footer />}
       </Dialog>
     </div>
   );
