@@ -1,35 +1,3 @@
-body,
-html {
-  height: 100vh;
-  overflow: auto;
-  margin: 0;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  /* -webkit-font-smoothing: antialiased; */
-  /* -moz-osx-font-smoothing: grayscale; */
-  background: #141e30; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #243b55,
-    #141e30
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #243b55,
-    #141e30
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-  user-select: none;
-}
-
 .loader {
   position: absolute;
   top: 50%;
@@ -62,21 +30,21 @@ body {
   left: 0%;
   top: 0%;
   animation: orbit-spinner-orbit-one-animation 1200ms linear infinite;
-  border-bottom: 3px solid #ff1d5e;
+  border-bottom: 3px solid rgb(255, 29, 94);
 }
 
 .orbit-spinner .orbit:nth-child(2) {
   right: 0%;
   top: 0%;
   animation: orbit-spinner-orbit-two-animation 1200ms linear infinite;
-  border-right: 3px solid #ff1d5e;
+  border-right: 3px solid rgb(255, 29, 94);
 }
 
 .orbit-spinner .orbit:nth-child(3) {
   right: 0%;
   bottom: 0%;
   animation: orbit-spinner-orbit-three-animation 1200ms linear infinite;
-  border-top: 3px solid #ff1d5e;
+  border-top: 3px solid rgb(255, 29, 94);
 }
 
 @keyframes orbit-spinner-orbit-one-animation {

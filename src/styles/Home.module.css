@@ -1,0 +1,9 @@
+.main {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(2, 0, 36, 0.75) 0%,
+    rgba(10, 25, 54, 0.45) 48%,
+    rgba(52, 124, 182, 0.45) 100%
+  );
+}
