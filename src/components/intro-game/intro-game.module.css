@@ -1,0 +1,11 @@
+.playButton {
+  background: linear-gradient(to right, rgb(13, 19, 27), rgb(26, 38, 54));
+  box-shadow: 0 2px 6px rgba(35, 141, 157, 0.22),
+    0 4px 8px rgba(35, 141, 157, 0.12);
+  width: 150px;
+  height: 60px;
+}
+
+.playButton:hover {
+  filter: hue-rotate(50deg);
+}
