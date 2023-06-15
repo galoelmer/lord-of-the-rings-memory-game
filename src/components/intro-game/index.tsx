@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -9,6 +9,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import { styled } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+import { useGameContext } from "@/context";
 import styles from "./intro-game.module.css";
 
 const Transition = forwardRef(function Transition(
@@ -34,65 +35,63 @@ const BootstrapDialog = styled(Dialog)(() => ({
 }));
 
 export default function IntroGame() {
-  const [open, setOpen] = useState(true);
+  const { displayPlayground, setDisplayPlayground } = useGameContext();
 
   const isMobileLarge = useMediaQuery("(max-width:600px)");
   const isMobileMedium = useMediaQuery("(max-width:400px)");
   const isMobileSmall = useMediaQuery("(max-width:330px)");
 
   const handleClose = () => {
-    setOpen(false);
+    setDisplayPlayground(true);
   };
 
   return (
-    <div>
-      <BootstrapDialog
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
+    <BootstrapDialog
+      open={!displayPlayground}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+    >
+      <DialogContent
+        style={{
+          maxHeight: "100%",
+          position: "relative",
+          width: isMobileSmall
+            ? 270
+            : isMobileMedium
+            ? 320
+            : isMobileLarge
+            ? 370
+            : 500,
+          height: isMobileSmall
+            ? 250
+            : isMobileMedium
+            ? 300
+            : isMobileLarge
+            ? 350
+            : 450,
+        }}
       >
-        <DialogContent
-          style={{
-            maxHeight: "100%",
-            position: "relative",
-            width: isMobileSmall
-              ? 270
-              : isMobileMedium
-              ? 320
-              : isMobileLarge
-              ? 370
-              : 500,
-            height: isMobileSmall
-              ? 250
-              : isMobileMedium
-              ? 300
-              : isMobileLarge
-              ? 350
-              : 450,
-          }}
-        >
+        <Image
+          fill
+          priority
+          sizes="(max-width:330px) 330px, (max-width:400px) 400px, (max-width:600px) 600px, 500px"
+          src="/images/intro_image.png"
+          style={{ objectFit: "contain" }}
+          quality={100}
+          alt="Game intro"
+        />
+      </DialogContent>
+      <DialogActions style={{ marginTop: 40 }}>
+        <Button className={styles.playButton} onClick={handleClose}>
           <Image
-            fill
-            priority
-            sizes="(max-width:330px) 330px, (max-width:400px) 400px, (max-width:600px) 600px, 500px"
-            src="/images/intro_image.png"
-            style={{ objectFit: "contain" }}
-            quality={100}
-            alt="Game intro"
+            src="/images/play_button.png"
+            width={130}
+            height={45}
+            sizes=""
+            alt="Play button"
           />
-        </DialogContent>
-        <DialogActions style={{ marginTop: 40 }}>
-          <Button className={styles.playButton} onClick={handleClose}>
-            <Image
-              src="/images/play_button.png"
-              width={130}
-              height={45}
-              sizes=""
-              alt="Play button"
-            />
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </div>
+        </Button>
+      </DialogActions>
+    </BootstrapDialog>
   );
 }

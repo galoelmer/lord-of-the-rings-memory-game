@@ -1,0 +1,25 @@
+.container {
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  height: 100%;
+}
+
+.character-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  filter: brightness(1.15);
+  will-change: transform, opacity, width, height;
+}
+
+.character-image {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.3), 2px 8px 8px rgba(0, 0, 0, 0.1);
+}
