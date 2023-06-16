@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import { useTransition, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
@@ -9,10 +9,18 @@ import styles from "./playground.module.css";
 import type { CharacterInfo } from "@/context/types";
 
 const Playground = () => {
+  const [selectedCharacters, setSelectedCharacters] = useState<string[]>([]);
   const [ref, { width }] = useMeasure();
   const mobileSize = useMediaQuery("(max-width:600px)");
-  const { charactersList, shuffleCharactersList, displayPlayground } =
-    useGameContext();
+  const {
+    charactersList,
+    displayPlayground,
+    setCharacterName,
+    shuffleCharactersList,
+    setScore,
+    setOpenModal,
+    setChallengeComplete,
+  } = useGameContext();
 
   const columns = mobileSize ? 3 : 4;
 
@@ -45,6 +53,30 @@ const Playground = () => {
     trail: 25,
   });
 
+  const handleClick = (key: CharacterInfo["key"]) => {
+    if (selectedCharacters.includes(key)) {
+      const character = charactersList.find((item) => item.key === key);
+      if (character) {
+        setCharacterName(character.name);
+        setOpenModal(true);
+      }
+      setScore(0);
+      setSelectedCharacters([]);
+    } else {
+      setSelectedCharacters((prevState) => [key, ...prevState]);
+    }
+    shuffleCharactersList();
+  };
+
+  useEffect(() => {
+    setScore(selectedCharacters.length);
+    if (selectedCharacters.length === 12) {
+      setSelectedCharacters([]);
+      setChallengeComplete(true);
+      setOpenModal(true);
+    }
+  }, [selectedCharacters.length, setChallengeComplete, setOpenModal, setScore]);
+
   if (!displayPlayground) {
     return null;
   }
@@ -59,18 +91,12 @@ const Playground = () => {
         return (
           <animated.div
             key={item.key}
-            onClick={shuffleCharactersList}
+            onClick={() => handleClick(item.key)}
             className={styles["character-image-wrapper"]}
             style={style}
           >
             <div className={styles["character-image"]}>
-              <Image
-                fill
-                src={item.image}
-                alt={item.name}
-                quality={100}
-                sizes=""
-              />
+              <Image fill src={item.image} alt={item.name} quality={100} />
             </div>
           </animated.div>
         );
