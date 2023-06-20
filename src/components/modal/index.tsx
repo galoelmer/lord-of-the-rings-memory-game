@@ -1,130 +1,95 @@
-import { MouseEvent, useEffect, useState, useCallback } from "react";
+import { useCallback } from "react";
+import Image from "next/image";
+import { Bilbo_Swash_Caps } from "next/font/google";
 import Button from "@mui/material/Button";
 import Fade from "@mui/material/Fade";
 import MuiModal from "@mui/material/Modal";
-import Popover from "@mui/material/Popover";
-import Image from "next/image";
-import { Bilbo_Swash_Caps } from "next/font/google";
 
+import Confetti from "./confetti";
 import { useGameContext } from "@/context";
 
 import styles from "./modal.module.css";
 
 const bilbo = Bilbo_Swash_Caps({ weight: "400", subsets: ["latin"] });
-console.log("TCL ▶︎ file: index.tsx:18 ▶︎ bilbo:", bilbo);
 
 const Modal = () => {
-  const [imageSrc, setImageSrc] = useState<string>("");
-  const [anchorEl, setAnchorEl] = useState<HTMLSpanElement | null>(null);
   const {
-    openModal,
-    setOpenModal,
-    isChallengeComplete,
     characterName,
-    setScore,
-    shuffleCharactersList,
-    charactersList,
+    isChallengeComplete,
+    openModal,
+    resetGame,
+    setDisplayPlayground,
   } = useGameContext();
 
   const handleClose = useCallback(
     (e?: {}, reason?: "backdropClick" | "escapeKeyDown") => {
       if (reason !== "backdropClick") {
-        shuffleCharactersList();
-        setOpenModal(false);
-        setScore(0);
+        resetGame();
       }
     },
-    [setOpenModal, setScore, shuffleCharactersList]
+    [resetGame]
   );
 
-  const handlePopoverOpen = useCallback(
-    (event: MouseEvent<HTMLSpanElement>) => {
-      setAnchorEl(event.currentTarget);
+  const handleResetGame = useCallback(
+    (e?: {}, reason?: "backdropClick" | "escapeKeyDown") => {
+      if (reason !== "backdropClick") {
+        resetGame();
+        setDisplayPlayground(false);
+      }
     },
-    []
+    [resetGame, setDisplayPlayground]
   );
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const openPopover = Boolean(anchorEl);
-
-  useEffect(() => {
-    const imageSrc = charactersList.find(
-      (image) => image.name === characterName
-    );
-    setImageSrc(imageSrc?.image ?? "");
-  }, [characterName, charactersList]);
 
   return (
     <div>
+      {isChallengeComplete && <Confetti />}
       <MuiModal open={openModal} onClose={handleClose} className={styles.modal}>
         <Fade in={openModal}>
           <div className={`${styles["modal__content"]}`} style={bilbo.style}>
-            {isChallengeComplete ? (
-              <h2 className={`${styles["modal__header"]}`}>
-                Challenge Completed!
-              </h2>
-            ) : (
-              <div>
-                <h2 className={`${styles["modal__header"]}`}>Sorry!</h2>
-                <p className={styles.modal__message}>
-                  <span
-                    aria-owns={openPopover ? "mouse-over-popover" : undefined}
-                    aria-haspopup="true"
-                    onMouseEnter={handlePopoverOpen}
-                    onMouseLeave={handlePopoverClose}
-                    className={styles["modal__character-name"]}
-                  >
-                    {characterName + " "}
-                  </span>
-                  was selected twice
-                </p>
-                <Popover
-                  className={styles.popover}
-                  id="mouse-over-popover"
-                  open={openPopover}
-                  anchorEl={anchorEl}
-                  onClose={handlePopoverClose}
-                  elevation={8}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: 18,
-                  }}
-                  transformOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  sx={{
-                    pointerEvents: "none",
-                  }}
-                  slotProps={{
-                    paper: {
-                      style: {
-                        backgroundColor: "transparent",
-                      },
-                    },
-                  }}
-                >
-                  <Image
-                    className={styles["popover__character-image"]}
-                    src={imageSrc}
-                    alt={characterName ?? ""}
-                    width={80}
-                    height={80}
-                  />
-                </Popover>
+            <div className={`${styles["modal__content-background"]}`}>
+              <Image
+                fill
+                alt="gandalf by the fire"
+                style={{ filter: "hue-rotate(180deg)" }}
+                src={
+                  isChallengeComplete
+                    ? "/images/modal_image_success.jpeg"
+                    : "/images/modal_image_error.png"
+                }
+              />
+              <div className={styles.message_container}>
+                <h2 className={`${styles["modal__header"]}`}>
+                  {isChallengeComplete ? "Well Done!" : "Oh no..."}
+                </h2>
+                {!isChallengeComplete && (
+                  <p className={styles.modal__message}>
+                    <span className={styles["modal__character-name"]}>
+                      {characterName + " "}
+                    </span>
+                    was selected twice
+                  </p>
+                )}
               </div>
-            )}
-            <Button
-              className={styles["modal__button"]}
-              onClick={() => handleClose()}
-              variant="contained"
-              color="primary"
-            >
-              Try again
-            </Button>
+            </div>
+            <div className={styles.modal__footer}>
+              <p>Try Again?</p>
+              <Button
+                className={styles["modal__button"]}
+                onClick={() => handleClose()}
+                variant="contained"
+                color="primary"
+              >
+                Yes
+              </Button>
+              <Button
+                className={styles["modal__button"]}
+                onClick={() => handleResetGame()}
+                variant="contained"
+                color="primary"
+              >
+                No
+              </Button>
+            </div>
           </div>
         </Fade>
       </MuiModal>

@@ -8,7 +8,7 @@ import {
 } from "react";
 import _shuffle from "lodash.shuffle";
 
-import charactersList from "./charactersList";
+import sourceCharactersList from "./charactersList";
 import reducer from "./reducer";
 
 import { IGameContext, CharacterInfo } from "./types";
@@ -22,11 +22,12 @@ const initialState = {
   setChallengeComplete: (isChallengeComplete: boolean) => {},
   characterName: null,
   setCharacterName: (characterName: string | null) => {},
-  charactersList: _shuffle(charactersList).slice(0, 12),
+  charactersList: _shuffle(sourceCharactersList).slice(0, 12),
   setCharactersList: (charactersList: CharacterInfo[]) => {},
   displayPlayground: false,
   setDisplayPlayground: (displayPlayground: boolean) => {},
   shuffleCharactersList: () => {},
+  resetGame: () => {},
 };
 
 export const GameContext = createContext<IGameContext>(initialState);
@@ -89,6 +90,20 @@ const GameContextProvider = ({ children }: PropsWithChildren) => {
     setCharactersList(_shuffle(charactersList));
   }, [charactersList, setCharactersList]);
 
+  const resetGame = useCallback(() => {
+    setCharactersList(_shuffle(sourceCharactersList).slice(0, 12));
+    setScore(0);
+    setOpenModal(false);
+    setChallengeComplete(false);
+    setCharacterName(null);
+  }, [
+    setChallengeComplete,
+    setCharacterName,
+    setCharactersList,
+    setOpenModal,
+    setScore,
+  ]);
+
   const values = useMemo(
     () => ({
       score,
@@ -104,6 +119,7 @@ const GameContextProvider = ({ children }: PropsWithChildren) => {
       shuffleCharactersList,
       displayPlayground,
       setDisplayPlayground,
+      resetGame,
     }),
     [
       score,
@@ -119,6 +135,7 @@ const GameContextProvider = ({ children }: PropsWithChildren) => {
       shuffleCharactersList,
       displayPlayground,
       setDisplayPlayground,
+      resetGame,
     ]
   );
 

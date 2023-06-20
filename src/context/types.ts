@@ -20,6 +20,7 @@ export interface IGameContext {
   displayPlayground: boolean;
   setDisplayPlayground: (displayPlayground: boolean) => void;
   shuffleCharactersList: () => void;
+  resetGame: () => void;
 }
 
 export type GameActions =
