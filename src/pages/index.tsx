@@ -3,7 +3,7 @@ import Head from "next/head";
 import BackgroundImage from "@/components/background-image";
 import IntroGame from "@/components/intro-game";
 
-import styles from "@/styles/home.module.css";
+import styles from "@/styles/Home.module.css";
 import Playground from "@/components/playground";
 import ScoreBar from "@/components/score";
 import Modal from "@/components/modal";
