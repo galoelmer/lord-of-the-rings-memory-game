@@ -78,25 +78,26 @@
 }
 
 .modal__button {
-  border: none;
-  font-family: fantasy;
+  font-family: fantasy !important;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.modal__footer > .modal__button {
   letter-spacing: 0.1em;
   font-size: 1.6rem;
-  text-shadow: 1px 1px 2px #000;
-  cursor: pointer;
   background-color: rgba(183, 92, 59, 0.8);
   text-transform: capitalize;
 }
 
-.modal__button:hover {
+.modal__footer > .modal__button:hover {
   background-color: rgba(145, 72, 46, 0.8);
 }
 
-.modal__button:first-of-type {
+.modal__footer > .modal__button:first-of-type {
   background-color: rgba(59, 183, 154, 0.8);
 }
 
-.modal__button:first-of-type:hover {
+.modal__footer > .modal__button:first-of-type:hover {
   background-color: rgba(44, 140, 118, 0.8);
 }
 
@@ -127,8 +128,7 @@
     flex: 1 100%;
   }
 
-  .modal__button {
-    flex: 1;
+  .modal__footer > .modal__button {
     margin: 0 1rem 0.5rem;
     letter-spacing: 0.25em;
     font-size: 0.6em;
