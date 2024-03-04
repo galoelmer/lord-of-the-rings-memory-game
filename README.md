@@ -41,7 +41,7 @@ npm run start
 
 👤 **Noah Galo**
 
-* Website: https://github.com/galoelmer
+* Website: https://egalo.dev
 
 ## 🤝 Contributing
 
