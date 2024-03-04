@@ -39,7 +39,7 @@ npm run start
 
 ## Author
 
-👤 **Elmer C. Galo**
+👤 **Noah Galo**
 
 * Website: https://github.com/galoelmer
 
@@ -53,5 +53,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2019 [Elmer C. Galo](https://github.com/galoelmer).<br />
+Copyright © 2024 [Noah Galo](https://github.com/galonoah).<br />
 This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.
